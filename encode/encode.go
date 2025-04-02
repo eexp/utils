@@ -65,14 +65,14 @@ func Mmh3Hash32(raw []byte) string {
 func standBase64(braw []byte) []byte {
 	bckd := base64.StdEncoding.EncodeToString(braw)
 	var buffer bytes.Buffer
-	for i := 0; i < len(bckd); i++ {
-		ch := bckd[i]
-		buffer.WriteByte(ch)
-		if (i+1)%76 == 0 {
-			buffer.WriteByte('\n')
+	for i := 0; i < len(bckd); i += 76 {
+		end := i + 76
+		if end > len(bckd) {
+			end = len(bckd)
 		}
+		buffer.WriteString(bckd[i:end])
+		buffer.WriteByte('\n')
 	}
-	buffer.WriteByte('\n')
 	return buffer.Bytes()
 }
 
